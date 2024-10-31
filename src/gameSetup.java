@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class gameSetup {
     private int green;
     private int orange;
@@ -31,17 +33,15 @@ public class gameSetup {
     // takes in original x marker amount and removes the amount to take away from x
     // markers and returns the new amount
     public int takeAway(int sizeOfMarker, int amountTakeAway){
-        if (isValid(sizeOfMarker, amountTakeAway) &&
-                (sizeOfMarker > 0 && amountTakeAway > 0)){
-            sizeOfMarker =- amountTakeAway;
-            return sizeOfMarker;
+        if (isValid(sizeOfMarker, amountTakeAway)){
+            return sizeOfMarker - amountTakeAway;
         }
-        else return sizeOfMarker;
+        else return 0;
     }
 
     // returns if the amount to remove from x coloured marker is valid - checks valid move
     public boolean isValid(int sizeOfMarker, int amountTakeAway){
-        if ((amountTakeAway <= sizeOfMarker) && sizeOfMarker > 0){
+        if (amountTakeAway <= sizeOfMarker && sizeOfMarker > 0){
             return true;
         }
         else {
@@ -52,7 +52,7 @@ public class gameSetup {
     // will check to see which is a zero-position or not by using xor
     // will return either 1, 2, 3 (respective to green, orange, yellow) to let computer know
     // which group of markers to modify
-    public int isZeroPos(){
+    public int zeroPos(){
         if(green > (orange ^ yellow)){
             return 1;
         }
@@ -68,6 +68,20 @@ public class gameSetup {
         else{
             return -1;
         }
+    }
+
+    // checks if game is in zero position and returns boolean
+    public boolean isZeroPos(int pos){
+        return (pos == 1 || pos == 2 || pos == 3);
+    }
+
+    // prints the amount of green, orange, and yellow markers
+    public String printGame(){
+        return "Green markers: " + green + "\nOrange markers: " + orange + "\nYellow markers: " + yellow;
+    }
+
+    public boolean gameEnd(){
+        return (green <= 0 && orange <= 0 && yellow <= 0);
     }
 
     // ----------------------COMPUTER MOVES--------------------------------
@@ -94,54 +108,114 @@ public class gameSetup {
 
     // chooses a random number between 1 and the amount of markers left and returns the random number
     // will also check to make sure move is valid before returning the amount
-    public int randomMove(){
-        String marker = randomMarker();
-        int chosenAmount = 0;
-        chosenAmount = (int) (Math.random() * ((getMarkerAmount(marker) - 1) + 1));
+    public int randomMove(String markerColour) {
+        int markerAmount = getMarkerAmount(markerColour);
+        int chosenAmount = (int) (Math.random() * (markerAmount - 1)) + 1;
 
-        if (isValid(getMarkerAmount((marker)), chosenAmount)){
+        if (isValid(markerAmount, chosenAmount)) {
             return chosenAmount;
-        }
-        else{
+        } else {
             return -1;
         }
     }
 
+
     // chooses a random marker colour
     public String randomMarker(){
         int stringChooser = (int) (Math.random() * ((3 - 1) + 1));
-        if (stringChooser == 1){
+        if (stringChooser == 1 && getMarkerAmount("green") != 0){
+                return "green";
+        }
+        if (stringChooser == 2 && getMarkerAmount("orange") != 0){
+                return "orange";
+        }
+        if (stringChooser == 3 && getMarkerAmount("yellow") != 0){
+                return "yellow";
+        }
+
+        else if(getMarkerAmount("green") == 0 && getMarkerAmount("orange") == 0){
+            return "yellow";
+        }
+
+        else if(getMarkerAmount("orange") == 0 && getMarkerAmount("yellow") == 0){
             return "green";
         }
-        if (stringChooser == 2){
+
+        else if(getMarkerAmount("yellow") == 0 && getMarkerAmount("green") == 0){
             return "orange";
         }
+
         else{
-            return "yellow";
+            return "error";
+        }
+
+    }
+
+    // checks to see markers are in a zero position or not and plays accordingly
+    public String playWinMarker(){
+        if (zeroPos() == 1){
+            return "green";
+        }
+        if (zeroPos() == 2){
+            return "orange";
+        }
+        if (zeroPos() == 1){
+            return "green";
+        }
+        else {
+            return randomMarker();
         }
     }
 
-    public boolean isMyTurn(String whosTurn){
-        if ((whosTurn.equals("computer")) || (whosTurn.equals("Computer"))){
-            return true;
+    public int playWinAmount(){
+        if (zeroPos() == 1){
+            return orange ^ yellow;
+        }
+        if (zeroPos() == 2){
+            return green ^ yellow;
+        }
+        if (zeroPos() == 1){
+            return green ^ orange;
         }
         else {
-            return false;
+            return randomMove(randomMarker());
         }
     }
-    // checks to see markers are in a zero position or not and plays accordingly
-    public int playWin(){
-        if (isZeroPos() == 1){
-            return setNewMarker("green", (orange ^ yellow));
+    // ----------------------USER MOVES--------------------------------
+
+    // has the user select a marker and returns the selection
+    public String userSelectMarker(){
+        System.out.println("Please choose a colour: green, orange, yellow");
+        gameSetup game = new gameSetup();
+        Scanner userInput = new Scanner(System.in);
+        String input = userInput.nextLine();
+        if(input.equals("green")){
+            return "green";
         }
-        if (isZeroPos() == 2){
-            return setNewMarker("orange", (green ^ yellow));
+
+        if(input.equals("orange")){
+            return "orange";
         }
-        if (isZeroPos() == 1){
-            return setNewMarker("green", (green ^ orange));
+
+        if(input.equals("yellow")){
+            return "yellow";
         }
-        else {
-            return setNewMarker(randomMarker(), randomMove());
+
+        else{
+            return "error";
+        }
+    }
+
+    public int userSelectAmount(int markerAmount){
+        System.out.println("Please the amount of markers you want to take away");
+        gameSetup game = new gameSetup();
+        Scanner userInput = new Scanner(System.in);
+        int input = userInput.nextInt();
+        if(isValid(markerAmount, input)){
+            return input;
+        }
+        else{
+            return -1;
         }
     }
 
