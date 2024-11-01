@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -15,199 +16,55 @@ public class Main {
             whosTurnIsIt = 1;
             while (!game.gameEnd()) {
                 if (whosTurnIsIt == 0) {
-                    System.out.println("Computer's turn.");
-                    System.out.println(game.printGame());
-                    if (game.isZeroPos(game.zeroPos())) {
-                        String winComputerMarker = game.playWinMarker();
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerMarker = "yellow";
-                        }
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                            winComputerMarker = "orange";
-                        }
-                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerMarker = "green";
-                        }
-                        while (winComputerMarker.equals("error") || game.getMarkerAmount(winComputerMarker) == 0) {
-                            winComputerMarker = game.randomMarker();
-                        }
-                        int winComputerAmount = game.playWinAmount();
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerAmount = game.getMarkerAmount("yellow");
-                        }
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                            winComputerAmount = game.getMarkerAmount("orange");
-                        }
-                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerAmount = game.getMarkerAmount("green");
-                        }
-                        while (winComputerAmount == -1) {
-                            winComputerAmount = game.randomMove(winComputerMarker);
-                        }
-                        System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
-                        int winComputerNewAmount = game.takeAway(game.getMarkerAmount(winComputerMarker), winComputerAmount);
-                        game.setNewMarker(winComputerMarker, winComputerNewAmount);
-                        whosTurnIsIt = 1;
-                    } else {
-                        String computerMarker = game.randomMarker();
-                        while (computerMarker.equals("error") || game.getMarkerAmount(computerMarker) == 0) {
-                            computerMarker = game.randomMarker();
-                        }
-                        int computerAmount = game.randomMove(computerMarker);
-                        while (computerAmount == -1) {
-                            computerAmount = game.randomMove(computerMarker);
-                        }
-                        int computerNewAmount = game.takeAway(game.getMarkerAmount(computerMarker), computerAmount);
-                        System.out.println("I choose " + computerMarker + " and to take away " + computerAmount + " markers.");
-                        game.setNewMarker(computerMarker, computerNewAmount);
-                        whosTurnIsIt = 1;
-                    }
-                }
-                if (whosTurnIsIt == 1) {
-                    System.out.println("Your turn.");
-                    System.out.println(game.printGame());
-                    String userMarker = game.userSelectMarker();
-                    while (userMarker.equals("error")) {
-                        System.out.println("Spell better or type something valid, try again.");
-                        userMarker = game.userSelectMarker();
-                    }
-                    int userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                    while (userAmount == -1) {
-                        System.out.println("Invalid number, try again.");
-                        userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                    }
-                    int userNewAmount = game.takeAway(game.getMarkerAmount(userMarker), userAmount);
-                    game.setNewMarker(userMarker, userNewAmount);
+                    game.computerTurn();
+                    whosTurnIsIt = 1;
+                } else if (whosTurnIsIt == 1) {
+                    game.userTurn();
                     whosTurnIsIt = 0;
-                } else {
-                    System.out.println("Something went wrong.");
                 }
+            }
+            if(whosTurnIsIt == 1) {
+                System.out.println("Computer wins. You suck.");
+            }
+            if(whosTurnIsIt == 0) {
+                System.out.println("User wins. Congrat!");
             }
         }
-        if (input.equals("computer")) {
+        else if (input.equals("computer")) {
             whosTurnIsIt = 0;
             while (!game.gameEnd()) {
                 if (whosTurnIsIt == 0) {
-                    System.out.println("Computer's turn.");
-                    System.out.println(game.printGame());
-                    if (game.isZeroPos(game.zeroPos())) {
-                        String winComputerMarker = game.playWinMarker();
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerMarker = "yellow";
-                        }
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                            winComputerMarker = "orange";
-                        }
-                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerMarker = "green";
-                        }
-                        while (winComputerMarker.equals("error") || game.getMarkerAmount(winComputerMarker) == 0) {
-                            winComputerMarker = game.randomMarker();
-                        }
-                        int winComputerAmount = game.playWinAmount();
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerAmount = game.getMarkerAmount("yellow");
-                        }
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                            winComputerAmount = game.getMarkerAmount("orange");
-                        }
-                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerAmount = game.getMarkerAmount("green");
-                        }
-                        while (winComputerAmount == -1) {
-                            winComputerAmount = game.randomMove(winComputerMarker);
-                        }
-                        System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
-                        int winComputerNewAmount = game.takeAway(game.getMarkerAmount(winComputerMarker), winComputerAmount);
-                        game.setNewMarker(winComputerMarker, winComputerNewAmount);
-                        whosTurnIsIt = 1;
-                    }
-                    if (whosTurnIsIt == 1) {
-                        System.out.println("Your turn.");
-                        System.out.println(game.printGame());
-                        String userMarker = game.userSelectMarker();
-                        while (userMarker.equals("error")) {
-                            System.out.println("Spell better or type something valid, try again.");
-                            userMarker = game.userSelectMarker();
-                        }
-                        int userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                        while (userAmount == -1) {
-                            System.out.println("Invalid number, try again.");
-                            System.out.println("userAmount: " + userAmount);
-                            userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                        }
-                        int userNewAmount = game.takeAway(game.getMarkerAmount(userMarker), userAmount);
-                        game.setNewMarker(userMarker, userNewAmount);
-                        whosTurnIsIt = 0;
-                    } else {
-                        System.out.println("Something went wrong.");
-                    }
+                    game.computerTurn();
+                    whosTurnIsIt = 1;
+                } else if (whosTurnIsIt == 1) {
+                    game.userTurn();
+                    whosTurnIsIt = 0;
                 }
             }
-        } else {
-            whosTurnIsIt = 0;
+            if(whosTurnIsIt == 1) {
+                System.out.println("Computer wins. You suck.");
+            }
+            if(whosTurnIsIt == 0) {
+                System.out.println("User wins. Congrat!");
+            }
+        }
+        else if (!input.equals("computer") || !input.equals("user")) {
+            whosTurnIsIt = 1;
             while (!game.gameEnd()) {
+                System.out.println("You stink at typing, so I will go first.");
                 if (whosTurnIsIt == 0) {
-                    System.out.println("Computer's turn.");
-                    System.out.println(game.printGame());
-                    if (game.isZeroPos(game.zeroPos())) {
-                        String winComputerMarker = game.playWinMarker();
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerMarker = "yellow";
-                        }
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                            winComputerMarker = "orange";
-                        }
-                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerMarker = "green";
-                        }
-                        while (winComputerMarker.equals("error") || game.getMarkerAmount(winComputerMarker) == 0) {
-                            winComputerMarker = game.randomMarker();
-                        }
-                        int winComputerAmount = game.playWinAmount();
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerAmount = game.getMarkerAmount("yellow");
-                        }
-                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                            winComputerAmount = game.getMarkerAmount("orange");
-                        }
-                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                            winComputerAmount = game.getMarkerAmount("green");
-                        }
-                        while (winComputerAmount == -1) {
-                            winComputerAmount = game.randomMove(winComputerMarker);
-                        }
-                        System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
-                        int winComputerNewAmount = game.takeAway(game.getMarkerAmount(winComputerMarker), winComputerAmount);
-                        game.setNewMarker(winComputerMarker, winComputerNewAmount);
-                        whosTurnIsIt = 1;
-                    }
-                    if (whosTurnIsIt == 1) {
-                        System.out.println("Your turn.");
-                        System.out.println(game.printGame());
-                        String userMarker = game.userSelectMarker();
-                        while (userMarker.equals("error")) {
-                            System.out.println("Spell better or type something valid, try again.");
-                            userMarker = game.userSelectMarker();
-                        }
-                        int userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                        while (userAmount == -1) {
-                            System.out.println("Invalid number, try again.");
-                            System.out.println("userAmount: " + userAmount);
-                            userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                        }
-                        int userNewAmount = game.takeAway(game.getMarkerAmount(userMarker), userAmount);
-                        game.setNewMarker(userMarker, userNewAmount);
-                        whosTurnIsIt = 0;
-                    } else {
-                        System.out.println("Something went wrong.");
-                    }
+                    game.computerTurn();
+                    whosTurnIsIt = 1;
+                } else if (whosTurnIsIt == 1) {
+                    game.userTurn();
+                    whosTurnIsIt = 0;
                 }
-                if (whosTurnIsIt == 1) {
-                    System.out.println("Computer wins. You suck.");
-                } else {
-                    System.out.println("You win. Good job.");
-                }
+            }
+            if(whosTurnIsIt == 1) {
+                System.out.println("Computer wins. You suck.");
+            }
+            if(whosTurnIsIt == 0) {
+                System.out.println("User wins. Congrat!");
             }
         }
     }

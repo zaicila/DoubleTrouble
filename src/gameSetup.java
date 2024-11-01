@@ -124,13 +124,13 @@ public class gameSetup {
     public String randomMarker(){
         int stringChooser = (int) (Math.random() * ((3 - 1) + 1));
         if (stringChooser == 1 && getMarkerAmount("green") != 0){
-                return "green";
+            return "green";
         }
         if (stringChooser == 2 && getMarkerAmount("orange") != 0){
-                return "orange";
+            return "orange";
         }
         if (stringChooser == 3 && getMarkerAmount("yellow") != 0){
-                return "yellow";
+            return "yellow";
         }
 
         else if(getMarkerAmount("green") == 0 && getMarkerAmount("orange") == 0){
@@ -174,11 +174,60 @@ public class gameSetup {
         if (zeroPos() == 2){
             return green ^ yellow;
         }
-        if (zeroPos() == 1){
+        if (zeroPos() == 3){
             return green ^ orange;
         }
         else {
             return randomMove(randomMarker());
+        }
+    }
+
+    public void computerTurn(){
+        System.out.println("Computer's turn.");
+        System.out.println(printGame());
+        if (isZeroPos(zeroPos())) {
+            String winComputerMarker = playWinMarker();
+            if (getMarkerAmount("green") == 0 && getMarkerAmount("orange") == 0) {
+                winComputerMarker = "yellow";
+            }
+            if (getMarkerAmount("green") == 0 && getMarkerAmount("yellow") == 0) {
+                winComputerMarker = "orange";
+            }
+            if (getMarkerAmount("yellow") == 0 && getMarkerAmount("orange") == 0) {
+                winComputerMarker = "green";
+            }
+            while (winComputerMarker.equals("error") || getMarkerAmount(winComputerMarker) == 0) {
+                winComputerMarker = randomMarker();
+            }
+            int winComputerAmount = playWinAmount();
+            if (getMarkerAmount("green") == 0 && getMarkerAmount("orange") == 0) {
+                winComputerAmount = getMarkerAmount("yellow");
+            }
+            if (getMarkerAmount("green") == 0 && getMarkerAmount("yellow") == 0) {
+                winComputerAmount = getMarkerAmount("orange");
+            }
+            if (getMarkerAmount("yellow") == 0 && getMarkerAmount("orange") == 0) {
+                winComputerAmount = getMarkerAmount("green");
+            }
+            while (winComputerAmount == -1) {
+                winComputerAmount = randomMove(winComputerMarker);
+            }
+            System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
+            int winComputerNewAmount = takeAway(getMarkerAmount(winComputerMarker), winComputerAmount);
+            setNewMarker(winComputerMarker, winComputerNewAmount);
+        }
+        else {
+            String computerMarker = randomMarker();
+            while (computerMarker.equals("error") || getMarkerAmount(computerMarker) == 0) {
+                computerMarker = randomMarker();
+            }
+            int computerAmount = randomMove(computerMarker);
+            while (computerAmount == -1) {
+                computerAmount = randomMove(computerMarker);
+            }
+            int computerNewAmount = takeAway(getMarkerAmount(computerMarker), computerAmount);
+            System.out.println("I choose " + computerMarker + " and to take away " + computerAmount + " markers.");
+            setNewMarker(computerMarker, computerNewAmount);
         }
     }
     // ----------------------USER MOVES--------------------------------
@@ -219,6 +268,22 @@ public class gameSetup {
         }
     }
 
-}
+    public void userTurn(){
+        System.out.println("Your turn.");
+        System.out.println(printGame());
+        String userMarker = userSelectMarker();
+        while (userMarker.equals("error")) {
+            System.out.println("Spell better or type something valid, try again.");
+            userMarker = userSelectMarker();
+        }
+        int userAmount = userSelectAmount(getMarkerAmount(userMarker));
+        while (userAmount == -1) {
+            System.out.println("Invalid number, try again.");
+            userAmount = userSelectAmount(getMarkerAmount(userMarker));
+        }
+        int userNewAmount = takeAway(getMarkerAmount(userMarker), userAmount);
+        setNewMarker(userMarker, userNewAmount);
+    }
 
+}
 
