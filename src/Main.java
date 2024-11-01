@@ -143,74 +143,72 @@ public class Main {
                         System.out.println("Something went wrong.");
                     }
                 }
-
-        else{
-                whosTurnIsIt = 0;
-                while (!game.gameEnd()) {
-                    if (whosTurnIsIt == 0) {
-                        System.out.println("Computer's turn.");
-                        System.out.println(game.printGame());
-                        if (game.isZeroPos(game.zeroPos())) {
-                            String winComputerMarker = game.playWinMarker();
-                            if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                                winComputerMarker = "yellow";
-                            }
-                            if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                                winComputerMarker = "orange";
-                            }
-                            if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                                winComputerMarker = "green";
-                            }
-                            while (winComputerMarker.equals("error") || game.getMarkerAmount(winComputerMarker) == 0) {
-                                winComputerMarker = game.randomMarker();
-                            }
-                            int winComputerAmount = game.playWinAmount();
-                            if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
-                                winComputerAmount = game.getMarkerAmount("yellow");
-                            }
-                            if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
-                                winComputerAmount = game.getMarkerAmount("orange");
-                            }
-                            if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
-                                winComputerAmount = game.getMarkerAmount("green");
-                            }
-                            while (winComputerAmount == -1) {
-                                winComputerAmount = game.randomMove(winComputerMarker);
-                            }
-                            System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
-                            int winComputerNewAmount = game.takeAway(game.getMarkerAmount(winComputerMarker), winComputerAmount);
-                            game.setNewMarker(winComputerMarker, winComputerNewAmount);
-                            whosTurnIsIt = 1;
+            }
+        } else {
+            whosTurnIsIt = 0;
+            while (!game.gameEnd()) {
+                if (whosTurnIsIt == 0) {
+                    System.out.println("Computer's turn.");
+                    System.out.println(game.printGame());
+                    if (game.isZeroPos(game.zeroPos())) {
+                        String winComputerMarker = game.playWinMarker();
+                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
+                            winComputerMarker = "yellow";
                         }
-                        if (whosTurnIsIt == 1) {
-                            System.out.println("Your turn.");
-                            System.out.println(game.printGame());
-                            String userMarker = game.userSelectMarker();
-                            while (userMarker.equals("error")) {
-                                System.out.println("Spell better or type something valid, try again.");
-                                userMarker = game.userSelectMarker();
-                            }
-                            int userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                            while (userAmount == -1) {
-                                System.out.println("Invalid number, try again.");
-                                System.out.println("userAmount: " + userAmount);
-                                userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
-                            }
-                            int userNewAmount = game.takeAway(game.getMarkerAmount(userMarker), userAmount);
-                            game.setNewMarker(userMarker, userNewAmount);
-                            whosTurnIsIt = 0;
-                        } else {
-                            System.out.println("Something went wrong.");
+                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
+                            winComputerMarker = "orange";
                         }
+                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
+                            winComputerMarker = "green";
+                        }
+                        while (winComputerMarker.equals("error") || game.getMarkerAmount(winComputerMarker) == 0) {
+                            winComputerMarker = game.randomMarker();
+                        }
+                        int winComputerAmount = game.playWinAmount();
+                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("orange") == 0) {
+                            winComputerAmount = game.getMarkerAmount("yellow");
+                        }
+                        if (game.getMarkerAmount("green") == 0 && game.getMarkerAmount("yellow") == 0) {
+                            winComputerAmount = game.getMarkerAmount("orange");
+                        }
+                        if (game.getMarkerAmount("yellow") == 0 && game.getMarkerAmount("orange") == 0) {
+                            winComputerAmount = game.getMarkerAmount("green");
+                        }
+                        while (winComputerAmount == -1) {
+                            winComputerAmount = game.randomMove(winComputerMarker);
+                        }
+                        System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
+                        int winComputerNewAmount = game.takeAway(game.getMarkerAmount(winComputerMarker), winComputerAmount);
+                        game.setNewMarker(winComputerMarker, winComputerNewAmount);
+                        whosTurnIsIt = 1;
                     }
                     if (whosTurnIsIt == 1) {
-                        System.out.println("Computer wins. You suck.");
+                        System.out.println("Your turn.");
+                        System.out.println(game.printGame());
+                        String userMarker = game.userSelectMarker();
+                        while (userMarker.equals("error")) {
+                            System.out.println("Spell better or type something valid, try again.");
+                            userMarker = game.userSelectMarker();
+                        }
+                        int userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
+                        while (userAmount == -1) {
+                            System.out.println("Invalid number, try again.");
+                            System.out.println("userAmount: " + userAmount);
+                            userAmount = game.userSelectAmount(game.getMarkerAmount(userMarker));
+                        }
+                        int userNewAmount = game.takeAway(game.getMarkerAmount(userMarker), userAmount);
+                        game.setNewMarker(userMarker, userNewAmount);
+                        whosTurnIsIt = 0;
                     } else {
-                        System.out.println("You win. Good job.");
+                        System.out.println("Something went wrong.");
                     }
+                }
+                if (whosTurnIsIt == 1) {
+                    System.out.println("Computer wins. You suck.");
+                } else {
+                    System.out.println("You win. Good job.");
                 }
             }
         }
-    }
     }
 }
