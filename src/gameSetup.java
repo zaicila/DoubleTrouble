@@ -41,7 +41,7 @@ public class gameSetup {
 
     // returns if the amount to remove from x coloured marker is valid - checks valid move
     public boolean isValid(int sizeOfMarker, int amountTakeAway){
-        if (amountTakeAway <= sizeOfMarker && sizeOfMarker > 0){
+        if (amountTakeAway <= sizeOfMarker && sizeOfMarker > 0 && amountTakeAway > 0){
             return true;
         }
         else {
@@ -111,7 +111,6 @@ public class gameSetup {
     public int randomMove(String markerColour) {
         int markerAmount = getMarkerAmount(markerColour);
         int chosenAmount = (int) (Math.random() * (markerAmount - 1)) + 1;
-
         if (isValid(markerAmount, chosenAmount)) {
             return chosenAmount;
         } else {
@@ -159,8 +158,8 @@ public class gameSetup {
         if (zeroPos() == 2){
             return "orange";
         }
-        if (zeroPos() == 1){
-            return "green";
+        if (zeroPos() == 3){
+            return "yellow";
         }
         else {
             return randomMarker();
@@ -259,13 +258,17 @@ public class gameSetup {
         System.out.println("Please the amount of markers you want to take away");
         gameSetup game = new gameSetup();
         Scanner userInput = new Scanner(System.in);
-        int input = userInput.nextInt();
-        if(isValid(markerAmount, input)){
-            return input;
+        int input;
+        while (true) {
+            if (userInput.hasNextInt()) {
+                input = userInput.nextInt();
+                break;
+            } else {
+                System.out.println("Can you not read? Try again but enter an integer this time.");
+                userInput.next();
+            }
         }
-        else{
-            return -1;
-        }
+        return input;
     }
 
     public void userTurn(){
@@ -277,7 +280,7 @@ public class gameSetup {
             userMarker = userSelectMarker();
         }
         int userAmount = userSelectAmount(getMarkerAmount(userMarker));
-        while (userAmount == -1) {
+        while (userAmount == -1 || userAmount == 0) {
             System.out.println("Invalid number, try again.");
             userAmount = userSelectAmount(getMarkerAmount(userMarker));
         }

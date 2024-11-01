@@ -49,9 +49,9 @@ public class Main {
             }
         }
         else if (!input.equals("computer") || !input.equals("user")) {
-            whosTurnIsIt = 1;
+            whosTurnIsIt = 0;
+            System.out.println("You stink at typing, so I will go first.");
             while (!game.gameEnd()) {
-                System.out.println("You stink at typing, so I will go first.");
                 if (whosTurnIsIt == 0) {
                     game.computerTurn();
                     whosTurnIsIt = 1;
