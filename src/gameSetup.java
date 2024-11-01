@@ -182,7 +182,7 @@ public class gameSetup {
     }
 
     public void computerTurn(){
-        System.out.println("Computer's turn.");
+        System.out.println("Computer's turn.\n");
         System.out.println(printGame());
         if (isZeroPos(zeroPos())) {
             String winComputerMarker = playWinMarker();
@@ -211,7 +211,7 @@ public class gameSetup {
             while (winComputerAmount == -1) {
                 winComputerAmount = randomMove(winComputerMarker);
             }
-            System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.");
+            System.out.println("I choose " + winComputerMarker + " and to take away " + winComputerAmount + " markers.\n");
             int winComputerNewAmount = takeAway(getMarkerAmount(winComputerMarker), winComputerAmount);
             setNewMarker(winComputerMarker, winComputerNewAmount);
         }
@@ -272,7 +272,7 @@ public class gameSetup {
     }
 
     public void userTurn(){
-        System.out.println("Your turn.");
+        System.out.println("Your turn.\n");
         System.out.println(printGame());
         String userMarker = userSelectMarker();
         while (userMarker.equals("error")) {

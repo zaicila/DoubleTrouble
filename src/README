@@ -1,11 +1,8 @@
 To play the game:
     compile run the main file
 
-Rules:
+Rules/Directions:
     1. choose who will go first, user or computer
-        1a. if you type things with a space after it will return an error
-        1b. if you go over the integer max it will return an error
-        if this happens, you will need to rerun the game and try again.
     2. choose a colour group to take markers from
     3. choose the amount of markers you want to take away
     4. be the one to take the last marker of the game to win
